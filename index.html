@@ -484,7 +484,7 @@
     
     <a href="https://discord.gg/5Yv9d26PHu" class="btn btn-discord" target="_blank">Join Discord</a>
 
-    <button class="btn btn-delta" onclick="openDeltaModal()"><i class="fas fa-download"></i> Download Delta</button>
+    <button class="btn btn-delta" onclick="openlink()"><i class="fas fa-download"></i> Download Delta</button>
   </div>
 
   <footer>© 2025 Vector Hub • All Rights Reserved</footer>
@@ -551,10 +551,7 @@
     const maxClicks = adLinks.length;
 
     function copyScript() {
-      if (clickCount < maxClicks) {
-        alert("⚠️ กดติดตามเพื่อปลดล็อค!");
-        return;
-      }
+
       const text = document.querySelector('.script-box').innerText;
       navigator.clipboard.writeText(text).then(() => {
         const msg = document.getElementById("copiedMsg");
@@ -563,11 +560,11 @@
       });
     }
 
+    function openlink() {
+      window.open("https://delta.filenetwork.vip/android.html", "_blank");
+    }
     function openModal() {
-      if (clickCount < maxClicks) {
-        alert("⚠️ กดติดตามเพื่อปลดล็อค!");
-        return;
-      }
+
       document.getElementById("keyModal").classList.add("active");
       document.body.style.overflow = "hidden";
     }
