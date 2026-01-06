@@ -1,620 +1,771 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vector Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Chakra+Petch:wght@500;700&family=Exo+2:wght@900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    :root {
-      --primary: #00f7ff49;
-      --secondary: #0800ff;
-      --accent: #ffb300;
-      --discord: #5865F2;
-      --bg-dark: #0a0a1f;
-      --card-bg: rgba(15, 20, 50, 0.7);
-      --text-neon: #00ff88;
-      --yt-red: #ff0000;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vector Hub | Script Station</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Chakra+Petch:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #00f7ff;
+            --secondary: #0800ff;
+            --accent: #ffb300;
+            --bg-dark: #050510;
+            --card-bg: rgba(10, 15, 45, 0.85);
+            --text-neon: #00ff88;
+            --border-color: rgba(0, 247, 255, 0.3);
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Chakra Petch', sans-serif;
-      background: var(--bg-dark);
-      color: #fff;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
 
-    .particles {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 0;
-    }
-    .particle {
-      position: absolute;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      border-radius: 50%;
-      opacity: 0;
-      box-shadow: 0 0 15px var(--primary);
-      animation: float 7s infinite ease-in-out;
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(0.4); opacity: 0; }
-      50% { transform: translateY(-100vh) scale(1); opacity: 0.7; }
-    }
+        /* Galaxy Background Canvas */
+        #galaxyCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
 
-    .logo {
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 5px solid transparent;
-      background: 
-        radial-gradient(circle at 30% 30%, var(--primary), transparent 0%),
-        linear-gradient(45deg, var(--primary), var(--secondary)) padding-box,
-        linear-gradient(45deg, var(--primary), var(--secondary)) border-box;
-      box-shadow: 
-        0 0 30px rgba(0, 212, 255, 0.7),
-        0 0 60px rgba(21, 0, 255, 0.4);
-      animation: pulse 2s infinite;
-      margin-bottom: 15px;
-    }
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 25px rgba(0, 212, 255, 0.7), 0 0 50px rgba(21, 0, 255, 0.4); }
-      50% { box-shadow: 0 0 40px rgba(0, 212, 255, 1), 0 0 80px rgba(21, 0, 255, 0.7); }
-    }
+        .container {
+            max-width: 700px;
+            width: 92%;
+            margin: 20px auto;
+            padding: 50px 40px;
+            background: rgba(10, 15, 45, 0.75);
+            backdrop-filter: blur(30px);
+            border-radius: 35px;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 80px rgba(0, 247, 255, 0.1), inset 0 0 50px rgba(0, 247, 255, 0.05);
+            text-align: center;
+            animation: slideIn 0.6s ease-out;
+            position: relative;
+            z-index: 10;
+        }
 
-    .container {
-      max-width: 680px;
-      width: 100%;
-      margin: 30px auto;
-      padding: 40px;
-      background: var(--card-bg);
-      backdrop-filter: blur(18px);
-      border-radius: 28px;
-      border: 1px solid rgb(0, 30, 255);
-      box-shadow: 
-        0 20px 50px rgba(0,0,0,0.5),
-        0 0 80px rgba(0, 68, 255, 0.644),
-        inset 0 0 30px rgba(255,255,255,0.08);
-      text-align: center;
-      position: relative;
-      z-index: 2;
-      animation: fadeIn 1.2s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    h1 {
-      font-family: 'Exo 2', sans-serif !important;
-      font-weight: 900;
-      font-size: 3.2rem;
-      background: linear-gradient(90deg, #00d4ff, #ffffff, #1500ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
-      letter-spacing: 4px;
-      margin-bottom: 8px;
-    }
-    .tagline {
-      font-size: 1.15rem;
-      color: #a0c4ff;
-      margin-bottom: 28px;
-      font-weight: 500;
-      text-shadow: 0 0 10px rgba(160, 196, 255, 0.4);
-    }
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 35px var(--primary), 0 0 60px rgba(0, 247, 255, 0.3);
+            margin-bottom: 25px;
+            object-fit: cover;
+            animation: pulse 2s ease-in-out infinite;
+        }
 
-    .script-box {
-      background: rgba(10, 15, 40, 0.85);
-      padding: 22px;
-      border-radius: 18px;
-      margin: 28px 0;
-      font-family: 'Courier New', monospace;
-      font-size: 15px;
-      color: var(--text-neon);
-      text-align: left;
-      user-select: text;
-      word-break: break-all;
-      border: 2px dashed var(--text-neon);
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.236);
-    }
-    .script-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgb(0, 255, 123), transparent);
-      animation: scan 2.5s infinite;
-    }
-    @keyframes scan {
-      0% { left: -100%; }
-      100% { left: 100%; }
-    }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 35px var(--primary), 0 0 60px rgba(0, 247, 255, 0.3); }
+            50% { box-shadow: 0 0 50px var(--primary), 0 0 80px rgba(0, 247, 255, 0.5); }
+        }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      padding: 16px 34px;
-      margin: 10px;
-      border: none;
-      border-radius: 50px;
-      font-weight: bold;
-      font-size: 17px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      position: relative;
-      overflow: hidden;
-      min-width: 210px;
-      box-shadow: 0 10px 28px rgba(0,0,0,0.35);
-    }
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-      transition: 0.7s;
-    }
-    .btn:hover::before { left: 100%; }
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            background: linear-gradient(90deg, #00f7ff, #00ff88, #00f7ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: 3px;
+            animation: gradientShift 3s ease infinite;
+        }
 
-    .btn-copy { background: linear-gradient(45deg, #00ff88, #00c853); color: #000; }
-    .btn-youtube { background: linear-gradient(45deg, var(--yt-red), #cc0000); color: white; }
-    .btn-key { background: linear-gradient(45deg, var(--accent), #ff8e53); color: white; }
-    .btn-discord { background: linear-gradient(45deg, var(--discord), #7289da); color: white; }
-    .btn-delta { background: linear-gradient(45deg, #6c757d, #495057); color: white; }
-    .btn:hover {
-      transform: translateY(-6px) scale(1.06);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.6);
-    }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+        }
 
-    .copied {
-      color: #00ff88;
-      font-weight: bold;
-      margin-top: 12px;
-      opacity: 0;
-      transition: opacity 0.4s;
-      font-size: 15px;
-    }
+        .subtitle {
+            color: #64b5f6;
+            font-size: 0.95rem;
+            margin-bottom: 35px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
 
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.94);
-      backdrop-filter: blur(14px);
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      padding: 15px;
-    }
-    .modal.active { display: flex; animation: modalFade 0.6s; }
-    @keyframes modalFade {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+        .script-container {
+            background: linear-gradient(135deg, #0a0a15 0%, #0f0f25 100%);
+            padding: 22px;
+            border-radius: 15px;
+            border: 2px solid var(--text-neon);
+            margin: 35px 0;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.1);
+        }
 
-    .modal-content {
-      background: linear-gradient(135deg, #0f1a3e, #0a0f2e);
-      border-radius: 28px;
-      max-width: 780px;
-      width: 100%;
-      max-height: 92vh;
-      overflow-y: auto;
-      padding: 35px;
-      border: 2px solid var(--primary);
-      box-shadow: 
-        0 0 70px rgba(0, 212, 255, 0.5),
-        inset 0 0 35px rgba(255,255,255,0.08);
-      position: relative;
-      animation: modalPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    @keyframes modalPop {
-      0% { transform: scale(0.65); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+        .script-container:hover {
+            background: linear-gradient(135deg, #0f0f25 0%, #1a1a35 100%);
+            border-color: #00ff88;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3), inset 0 0 20px rgba(0, 255, 136, 0.05);
+            transform: translateY(-3px);
+        }
 
-    .close-btn {
-      position: absolute;
-      top: 20px; right: 25px;
-      background: #ff4757;
-      color: white;
-      border: none;
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 18px rgba(255,71,87,0.5);
-      transition: 0.3s;
-    }
-    .close-btn:hover {
-      background: #ff3742;
-      transform: rotate(90deg) scale(1.1);
-    }
+        .script-text {
+            font-family: 'Consolas', monospace;
+            color: var(--text-neon);
+            word-break: break-all;
+            font-size: 14px;
+            font-weight: 600;
+        }
 
-    .modal h2 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.2rem;
-      background: linear-gradient(90deg, var(--primary), #ffffff, var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-      margin-bottom: 22px;
-      text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-    }
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
 
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 18px;
-      margin: 22px 0;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.6);
-      border: 2px solid var(--primary);
-    }
-    .video-container iframe {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border: none;
-    }
+        .btn {
+            padding: 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    .key-buttons {
-      display: grid;
-      gap: 18px;
-      margin-top: 25px;
-    }
-    .key-btn {
-      padding: 19px;
-      background: linear-gradient(45deg, #4ecdc4, #44a08d);
-      color: white;
-      text-align: center;
-      border-radius: 18px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.4s;
-      box-shadow: 0 10px 25px rgba(78, 205, 196, 0.35);
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-    }
-    .key-btn:hover {
-      transform: translateY(-5px);
-      background: linear-gradient(45deg, #45b7aa, #3d8b85);
-      box-shadow: 0 15px 30px rgba(78, 205, 196, 0.55);
-    }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+            z-index: -1;
+        }
 
-    .popup-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10000;
-      opacity: 1;
-      visibility: visible;
-      transition: all 0.3s ease;
-    }
+        .btn:hover::before { left: 100%; }
+        .btn:hover { transform: translateY(-5px); filter: brightness(1.25); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4); }
 
-    .popup-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
+        .btn-full { grid-column: span 2; }
+        .btn-copy { background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%); color: #000; font-weight: 700; }
+        .btn-status { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 2px solid var(--primary); }
+        .btn-velocity { background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); }
+        .btn-tutorial { background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); }
+        .btn-delta { background: linear-gradient(135deg, #334155 0%, #1e293b 100%); }
+        .btn-key { background: linear-gradient(135deg, #ffb300 0%, #ff9500 100%); color: #000; font-weight: 700; }
+        .btn-discord { background: linear-gradient(135deg, #5865F2 0%, #4752c4 100%); }
 
-    .popup-container {
-      background: linear-gradient(135deg, #0f1a3e, #0a0f2e);
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.4s ease;
-      position: relative;
-      border: 2px solid rgb(8, 0, 255);
-    }
+        /* Modal Style */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            backdrop-filter: blur(15px);
+            animation: fadeIn 0.3s ease;
+        }
 
-    @keyframes slideUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    .popup-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #ff0000;
-      margin-bottom: 15px;
-      text-align: center;
-    }
+        .modal.active { display: flex; }
 
-    .popup-description {
-      font-size: 1rem;
-      color: #a0c4ff;
-      text-align: center;
-      margin-bottom: 30px;
-      line-height: 1.6;
-    }
+        .modal-content {
+            background: linear-gradient(135deg, #0a0f2e 0%, #0f1535 100%);
+            padding: 45px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid var(--primary);
+            position: relative;
+            box-shadow: 0 0 60px rgba(0, 247, 255, 0.2);
+            animation: slideUp 0.4s ease-out;
+        }
 
-    .progress-container {
-      margin-bottom: 25px;
-    }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+        .modal-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
 
-    .progress-text {
-      font-size: 0.95rem;
-      color: #a0c4ff;
-      font-weight: 500;
-    }
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 28px;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-    .progress-counter {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #00ff88;
-      background: rgba(8, 0, 255, 0.2);
-      padding: 4px 12px;
-      border-radius: 20px;
-    }
+        .close-modal:hover { 
+            color: #00ff88;
+            transform: rotate(90deg);
+        }
 
-    .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: rgb(17, 0, 255);
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid rgb(0, 0, 0);
-    }
+        .key-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
 
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #0800ff, #00ff51);
-      border-radius: 10px;
-      transition: width 0.8s ease;
-      width: 0%;
-      box-shadow: 0 0 15px rgba(0, 255, 38, 0.5);
-    }
+        .key-link {
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(0, 247, 255, 0.1) 0%, rgba(0, 255, 136, 0.05) 100%);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
 
-    .popup-button {
-      width: 100%;
-      padding: 14px 24px;
-      background: linear-gradient(45deg, #0800ff, #1900ff);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgb(0, 0, 255);
-      position: relative;
-    }
+        .key-link:hover {
+            background: var(--primary);
+            color: #000;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(0, 247, 255, 0.3);
+        }
 
-    .popup-button:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(13, 0, 255, 0.6);
-    }
+        /* Video Modal */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
 
-    .popup-button:active:not(:disabled) {
-      transform: translateY(0);
-    }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
-    .popup-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+        /* Popup Lock Style */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(20px);
+        }
 
-    .popup-button.completed {
-      background: linear-gradient(45deg, #10b981, #059669);
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-    }
+        .popup-container {
+            background: linear-gradient(135deg, #0a0f2e 0%, #0f1535 100%);
+            padding: 50px 40px;
+            border-radius: 30px;
+            max-width: 420px;
+            width: 90%;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 60px rgba(0, 247, 255, 0.3);
+            text-align: center;
+            animation: popupSlideIn 0.5s ease-out;
+        }
 
-    .popup-button.completed:hover {
-      box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
-    }
+        @keyframes popupSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
 
-    footer {
-      margin-top: 60px;
-      font-size: 13px;
-      opacity: 0.65;
-      z-index: 2;
-      position: relative;
-      color: #a0c4ff;
-    }
+        .popup-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
 
-    @media (max-width: 480px) {
-      .container { padding: 28px; margin: 15px; }
-      h1 { font-size: 2.3rem; }
-      .btn { padding: 14px 26px; font-size: 16px; min-width: 170px; margin: 8px; }
-      .logo { width: 100px; height: 100px; }
-      .popup-container { padding: 30px 20px; }
-    }
-  </style>
+        .popup-description {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .progress-container {
+            margin-bottom: 35px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .progress-text {
+            color: #64b5f6;
+            font-weight: 600;
+        }
+
+        .progress-counter {
+            color: var(--text-neon);
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(0, 247, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00f7ff);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+        }
+
+        .popup-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+            color: #000;
+            border: none;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.3);
+        }
+
+        .popup-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+            filter: brightness(1.15);
+        }
+
+        .popup-button:active {
+            transform: translateY(-1px);
+        }
+
+        .popup-overlay.hidden {
+            display: none;
+        }
+
+        #copyMsg {
+            color: var(--text-neon);
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+            font-weight: bold;
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 500px) {
+            h1 { font-size: 2.2rem; }
+            .btn-grid { grid-template-columns: 1fr; }
+            .btn-full { grid-column: span 1; }
+            .container { padding: 35px 25px; }
+            .modal-content { padding: 30px 25px; }
+            .popup-container {
+                padding: 35px 25px;
+            }
+            .popup-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <div class="particles" id="particles"></div>
+    <canvas id="galaxyCanvas"></canvas>
 
-  <div class="container">
-    <img src="https://lh3.googleusercontent.com/pw/AP1GczMsHQhGD7fUxK00bjl0DdhTj13MSkVGNmCnM45faAtxP1jeKr7GrGzSlmdMiuYZQC76xAnNF4ruTSK06jImykZUXTdWIL-WxGvijeAI6wgPojWuYOi4J4uzb5-AQ4KoZo47-HH7vn4HKNumy5zOCOft=w150-h150-s-no-gm?authuser=0" alt="Vector Hub Logo" class="logo">
-    
-    <h1>VECTOR HUB</h1>
-    <p class="tagline">Premium Roblox Script • Free Key System</p>
-    
-    <div class="script-box">
-      loadstring(game:HttpGet("https://vectorhub.space"))()
-    </div>
-    
-    <button class="btn btn-copy" onclick="copyScript()">Copy Script</button>
-    
-    <div class="copied" id="copiedMsg">คัดลอกแล้ว!</div>
+    <!-- Popup Lock -->
+    <div class="popup-overlay" id="deltaModal">
+        <div class="popup-container">
+            <h2 class="popup-title">⚠️ สิ่งที่ต้องทำ</h2>
+            <p class="popup-description">เข้าไปกดติดตามเพื่อปลดล็อค</p>
 
-    <a href="https://www.youtube.com/@VectorHub" class="btn btn-youtube" target="_blank">YouTube</a>
+            <div class="progress-container">
+                <div class="progress-label">
+                    <span class="progress-text">ความคืบหน้า</span>
+                    <span id="counterText" class="progress-counter">0 / 1</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+            </div>
 
-    <br><br>
-    
-    <button class="btn btn-key" onclick="openModal()">How to Get Key</button>
-    
-    <a href="https://discord.gg/5Yv9d26PHu" class="btn btn-discord" target="_blank">Join Discord</a>
-
-    <button class="btn btn-delta" onclick="openlink()"><i class="fas fa-download"></i> Download Delta</button>
-  </div>
-
-  <footer>© 2025 Vector Hub • All Rights Reserved</footer>
-
-  <div class="modal" id="keyModal">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeModal()">×</button>
-      <h2>วิธีรับ Key</h2>
-      
-      <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/nvHjqzE_DBY" allowfullscreen></iframe>
-      </div>
-      
-      <div class="key-buttons">
-        <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_key_Linkvertise-rfYqIZgphQnH" class="key-btn" target="_blank">Linkvertise</a>
-        <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_key_Workink-NFztOeNDvycF" class="key-btn" target="_blank">Workink</a>
-        <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_Key_LootLabs-ZtJHdmBwPcca" class="key-btn" target="_blank">Lootlabs</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="popup-overlay" id="deltaModal">
-    <div class="popup-container">
-      <h2 class="popup-title">⚠️ สิ่งที่ต้องทำ</h2>
-      <p class="popup-description">เข้าไปกดติดตามเพื่อปลดล็อค</p>
-
-      <div class="progress-container">
-        <div class="progress-label">
-          <span class="progress-text">ความคืบหน้า</span>
-          <span id="counterText" class="progress-counter">0 / 1</span>
+            <button id="openAdBtn" class="popup-button">
+                ไปกดติดตาม
+            </button>
         </div>
-        <div class="progress-bar">
-          <div id="progressFill" class="progress-fill"></div>
-        </div>
-      </div>
-
-      <button id="openAdBtn" class="popup-button">
-        ไปกดติดตาม
-      </button>
     </div>
-  </div>
 
-  <script>
-    window.addEventListener("load", () => {
-      openDeltaModal();
-    });
+    <div class="container">
+        <img src="https://via.placeholder.com/150" alt="Logo" class="logo">
+        <h1>VECTOR HUB</h1>
+        <p class="subtitle">⚡ Free & Premium Roblox Scripts ⚡</p>
 
-    const particlesContainer = document.getElementById('particles');
-    for (let i = 0; i < 60; i++) {
-      const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.width = p.style.height = Math.random() * 7 + 3 + 'px';
-      p.style.left = Math.random() * 100 + '%';
-      p.style.animationDelay = Math.random() * 7 + 's';
-      p.style.animationDuration = (Math.random() * 6 + 6) + 's';
-      particlesContainer.appendChild(p);
-    }
+        <div class="script-container" onclick="copyScript()">
+            <p class="script-text" id="scriptDisplay">loadstring(game:HttpGet('https://vectorhub.space'))()</p>
+        </div>
+        <p id="copyMsg">✓ คัดลอกลง Clipboard เรียบร้อยแล้ว!</p>
 
-    const adLinks = [
-      "https://www.youtube.com/@VectorHub" 
-    ];
+        <div class="btn-grid">
+            <button class="btn btn-copy btn-full" onclick="copyScript()">
+                <i class="fas fa-copy"></i> Copy Script
+            </button>
 
-    let clickCount = 0;
-    const maxClicks = adLinks.length;
+            <a href="https://whatexpsare.online/" target="_blank" class="btn btn-status">
+                <i class="fas fa-search"></i> Check Executor
+            </a>
+            <a href="https://realvelocity.xyz/" target="_blank" class="btn btn-velocity">
+                <i class="fas fa-bolt"></i> Velocity
+            </a>
 
-    function copyScript() {
+            <button class="btn btn-tutorial" onclick="toggleVideoModal(true)">
+                <i class="fas fa-play-circle"></i> How to Get Key
+            </button>
+            <button class="btn btn-key" onclick="toggleModal(true)">
+                <i class="fas fa-key"></i> Get Key
+            </button>
+            
+            <a href="https://delta.filenetwork.vip/android.html" target="_blank" class="btn btn-delta">
+                <i class="fas fa-download"></i> Download Delta
+            </a>
 
-      const text = document.querySelector('.script-box').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        const msg = document.getElementById("copiedMsg");
-        msg.style.opacity = 1;
-        setTimeout(() => { msg.style.opacity = 0; }, 2000);
-      });
-    }
+            <a href="https://discord.gg/5Yv9d26PHu" target="_blank" class="btn btn-discord">
+                <i class="fab fa-discord"></i> Join Discord
+            </a>
+        </div>
+    </div>
 
-    function openlink() {
-      window.open("https://delta.filenetwork.vip/android.html", "_blank");
-    }
-    function openModal() {
+    <!-- Key Modal -->
+    <div class="modal" id="keyModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleModal(false)">&times;</span>
+            <h2>🔑 GET KEY</h2>
+            <p style="font-size: 14px; color: #94a3b8;">เลือก Provider ด้านล่างเพื่อรับคีย์สคริปต์</p>
+            
+            <div class="key-list">
+                <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_key_Linkvertise-rfYqIZgphQnH" target="_blank" class="key-link">
+                    <i class="fas fa-link"></i> Linkvertise
+                </a>
+                <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_key_Workink-NFztOeNDvycF" target="_blank" class="key-link">
+                    <i class="fas fa-link"></i> Workink
+                </a>
+                <a href="https://ads.luarmor.net/get_key?for=Vector_Hub_Key_LootLabs-ZtJHdmBwPcca" target="_blank" class="key-link">
+                    <i class="fas fa-link"></i> Lootlabs
+                </a>
+            </div>
+        </div>
+    </div>
 
-      document.getElementById("keyModal").classList.add("active");
-      document.body.style.overflow = "hidden";
-    }
-    function closeModal() {
-      document.getElementById("keyModal").classList.remove("active");
-      document.body.style.overflow = "auto";
-    }
-    document.getElementById("keyModal").addEventListener("click", function(e) {
-      if (e.target === this) closeModal();
-    });
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleVideoModal(false)">&times;</span>
+            <h2>📹 How to Get Key</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/nvHjqzE_DBY?si=A-VQUoFM_D_PYWg2" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </div>
 
-    function openDeltaModal() {
-      clickCount = 0;
-      document.getElementById("deltaModal").classList.remove("hidden");
-      document.getElementById("progressFill").style.width = "0%";
-      document.getElementById("counterText").textContent = "0 / " + maxClicks;
-      document.getElementById("openAdBtn").textContent = "ไปกดติดตาม";
-      document.getElementById("openAdBtn").classList.remove("completed");
-      document.body.style.overflow = "hidden";
-    }
+    <script>
+        // Galaxy Background Canvas
+        const canvas = document.getElementById('galaxyCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    function closeDeltaModal() {
-      document.getElementById("deltaModal").classList.add("hidden");
-      document.body.style.overflow = "auto";
-    }
+        let stars = [];
+        let particles = [];
 
-    document.getElementById("deltaModal").addEventListener("click", function(e) {
-      if (e.target === this && clickCount >= maxClicks) {
-        closeDeltaModal();
-      }
-    });
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.radius = Math.random() * 1.5;
+                this.opacity = Math.random() * 0.5 + 0.5;
+                this.color = this.getRandomColor();
+                this.twinkleSpeed = Math.random() * 0.02 + 0.01;
+            }
 
-    document.getElementById("openAdBtn").addEventListener("click", function() {
-      if (clickCount < adLinks.length) {
-        window.open(adLinks[clickCount], "_blank");
-      }
+            getRandomColor() {
+                const colors = ['#00f7ff', '#00ff88', '#ff006e', '#ffb300', '#ffffff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
 
-      clickCount++;
-      document.getElementById("counterText").textContent = clickCount + " / " + maxClicks;
-      document.getElementById("progressFill").style.width = (clickCount / maxClicks * 100) + "%";
+            update() {
+                this.opacity += Math.random() * 0.02 - 0.01;
+                if (this.opacity < 0) this.opacity = 0;
+                if (this.opacity > 1) this.opacity = 1;
+            }
 
-      if (clickCount >= maxClicks) {
-        document.getElementById("openAdBtn").textContent = "ปลดล็อคแล้ว ✔";
-        document.getElementById("openAdBtn").classList.add("completed");
-        setTimeout(() => {
-          window.open("https://delta.filenetwork.vip/android.html", "_blank");
-          closeDeltaModal();
-        }, 1500);
-      }
-    });
-  </script>
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.3 + 0.2;
+                this.color = ['#00f7ff', '#00ff88', '#ff006e'][Math.floor(Math.random() * 3)];
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.opacity -= 0.005;
+
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        // Initialize stars
+        for (let i = 0; i < 200; i++) {
+            stars.push(new Star());
+        }
+
+        // Initialize particles
+        for (let i = 0; i < 50; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw nebula effects
+            for (let i = 0; i < 3; i++) {
+                const gradient = ctx.createRadialGradient(
+                    Math.sin(Date.now() * 0.0001 + i) * canvas.width * 0.3 + canvas.width / 2,
+                    Math.cos(Date.now() * 0.0001 + i) * canvas.height * 0.3 + canvas.height / 2,
+                    0,
+                    canvas.width / 2,
+                    canvas.height / 2,
+                    canvas.width
+                );
+                gradient.addColorStop(0, `rgba(${100 + i * 20}, 0, ${200 - i * 30}, 0.1)`);
+                gradient.addColorStop(0.5, 'rgba(0, 247, 255, 0.05)');
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Update and draw stars
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            // Update and draw particles
+            particles.forEach((particle, index) => {
+                particle.update();
+                if (particle.opacity > 0) {
+                    particle.draw();
+                } else {
+                    particles[index] = new Particle();
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        animate();
+
+        // Popup Lock System
+        let isLocked = true;
+        const adLinks = ["https://www.youtube.com/@VectorHub"];
+        let followCount = 0;
+
+        window.addEventListener("load", () => {
+            showPopupLock();
+        });
+
+        function showPopupLock() {
+            const popup = document.getElementById("deltaModal");
+            if (popup && isLocked) {
+                popup.classList.remove("hidden");
+                document.body.style.overflow = "hidden";
+            }
+        }
+
+        function unlockWebsite() {
+            followCount++;
+            updateProgressBar();
+            
+            if (followCount >= 1) {
+                setTimeout(() => {
+                    closePopupLock();
+                }, 500);
+            }
+        }
+
+        function updateProgressBar() {
+            const total = 1;
+            const percentage = (followCount / total) * 100;
+            document.getElementById("progressFill").style.width = percentage + "%";
+            document.getElementById("counterText").textContent = followCount + " / " + total;
+        }
+
+        function closePopupLock() {
+            const popup = document.getElementById("deltaModal");
+            popup.classList.add("hidden");
+            isLocked = false;
+            document.body.style.overflow = "auto";
+        }
+
+        // Open Ad Link
+        document.getElementById("openAdBtn").addEventListener("click", () => {
+            window.open(adLinks[0], "_blank");
+            unlockWebsite();
+        });
+
+        // Script copy function
+        function copyScript() {
+            const text = document.getElementById("scriptDisplay").innerText;
+            navigator.clipboard.writeText(text);
+            const msg = document.getElementById("copyMsg");
+            msg.style.display = "block";
+            setTimeout(() => msg.style.display = "none", 2500);
+        }
+
+        // Modal functions
+        function toggleModal(show) {
+            const modal = document.getElementById("keyModal");
+            if (show) {
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            } else {
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        }
+
+        function toggleVideoModal(show) {
+            const modal = document.getElementById("videoModal");
+            if (show) {
+                modal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            } else {
+                modal.classList.remove("active");
+                document.body.style.overflow = "auto";
+            }
+        }
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const keyModal = document.getElementById("keyModal");
+            const videoModal = document.getElementById("videoModal");
+            if (event.target === keyModal) {
+                toggleModal(false);
+            }
+            if (event.target === videoModal) {
+                toggleVideoModal(false);
+            }
+        };
+    </script>
 </body>
 </html>
