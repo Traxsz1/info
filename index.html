@@ -31,14 +31,27 @@
             position: relative;
         }
 
-        /* Galaxy Background Canvas */
-        #galaxyCanvas {
+        /* Galaxy Background GIF */
+        .galaxy-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
+            background: url('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3azMybmZrMXRtN3N6ZDU5NW5ia2lsdmVsc3p6ZTJwZGhkYjA2a2RrbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/PkKzNQjwPy7GvxZbfe/giphy.gif') center/cover no-repeat;
+            background-attachment: fixed;
+        }
+
+        .galaxy-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 16, 0.4);
+            z-index: 1;
         }
 
         .container {
@@ -448,7 +461,7 @@
 </head>
 <body>
 
-    <canvas id="galaxyCanvas"></canvas>
+    <div class="galaxy-bg"></div>
 
     <!-- Popup Lock -->
     <div class="popup-overlay" id="deltaModal">
@@ -473,7 +486,7 @@
     </div>
 
     <div class="container">
-        <img src="https://via.placeholder.com/150" alt="Logo" class="logo">
+            <img src="https://lh3.googleusercontent.com/pw/AP1GczMsHQhGD7fUxK00bjl0DdhTj13MSkVGNmCnM45faAtxP1jeKr7GrGzSlmdMiuYZQC76xAnNF4ruTSK06jImykZUXTdWIL-WxGvijeAI6wgPojWuYOi4J4uzb5-AQ4KoZo47-HH7vn4HKNumy5zOCOft=w150-h150-s-no-gm?authuser=0" alt="Vector Hub Logo" class="logo">
         <h1>VECTOR HUB</h1>
         <p class="subtitle">⚡ Free & Premium Roblox Scripts ⚡</p>
 
@@ -544,137 +557,6 @@
     </div>
 
     <script>
-        // Galaxy Background Canvas
-        const canvas = document.getElementById('galaxyCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let stars = [];
-        let particles = [];
-
-        class Star {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.radius = Math.random() * 1.5;
-                this.opacity = Math.random() * 0.5 + 0.5;
-                this.color = this.getRandomColor();
-                this.twinkleSpeed = Math.random() * 0.02 + 0.01;
-            }
-
-            getRandomColor() {
-                const colors = ['#00f7ff', '#00ff88', '#ff006e', '#ffb300', '#ffffff'];
-                return colors[Math.floor(Math.random() * colors.length)];
-            }
-
-            update() {
-                this.opacity += Math.random() * 0.02 - 0.01;
-                if (this.opacity < 0) this.opacity = 0;
-                if (this.opacity > 1) this.opacity = 1;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1;
-                this.opacity = Math.random() * 0.3 + 0.2;
-                this.color = ['#00f7ff', '#00ff88', '#ff006e'][Math.floor(Math.random() * 3)];
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.opacity -= 0.005;
-
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
-        }
-
-        // Initialize stars
-        for (let i = 0; i < 200; i++) {
-            stars.push(new Star());
-        }
-
-        // Initialize particles
-        for (let i = 0; i < 50; i++) {
-            particles.push(new Particle());
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw nebula effects
-            for (let i = 0; i < 3; i++) {
-                const gradient = ctx.createRadialGradient(
-                    Math.sin(Date.now() * 0.0001 + i) * canvas.width * 0.3 + canvas.width / 2,
-                    Math.cos(Date.now() * 0.0001 + i) * canvas.height * 0.3 + canvas.height / 2,
-                    0,
-                    canvas.width / 2,
-                    canvas.height / 2,
-                    canvas.width
-                );
-                gradient.addColorStop(0, `rgba(${100 + i * 20}, 0, ${200 - i * 30}, 0.1)`);
-                gradient.addColorStop(0.5, 'rgba(0, 247, 255, 0.05)');
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-            }
-
-            // Update and draw stars
-            stars.forEach(star => {
-                star.update();
-                star.draw();
-            });
-
-            // Update and draw particles
-            particles.forEach((particle, index) => {
-                particle.update();
-                if (particle.opacity > 0) {
-                    particle.draw();
-                } else {
-                    particles[index] = new Particle();
-                }
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-
-        animate();
-
         // Popup Lock System
         let isLocked = true;
         const adLinks = ["https://www.youtube.com/@VectorHub"];
